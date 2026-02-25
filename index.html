@@ -1,155 +1,86 @@
  <!DOCTYPE html>
+      <html lang="en">
+     <head>
+       <meta charset="UTF-8"/>
+       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+       <title>Kvika Employee Rewards Portal</title>
+       <style>
+         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600
+     ;700&display=swap');
+
+         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }       
+     … +375 lines
+
+❯ it just renders as plain html, looks pretty plain, maybe we need to change syntax?     
+
+● The issue is likely the Google Fonts import not loading (requires internet) and the    
+  design falling back to system fonts. Two options — which do you prefer?
+
+● User answered Claude's questions:
+  ⎿  · How do you want to improve the page styling? → Bootstrap CDN (Recommended)        
+
+● Write(index.html)
+
+─────────────────────────────────────────────────────────────────────────────────────────
+ Create file
+ index.html
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+ <!DOCTYPE html>
  <html lang="en">
  <head>
    <meta charset="UTF-8"/>
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
    <title>Kvika Employee Rewards Portal</title>
+   <link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>        
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font 
+ /bootstrap-icons.min.css"/>
    <style>
-     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;70 
- 0&display=swap');
-
-     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
      body {
-       font-family: 'Inter', sans-serif;
-       background: #f0f2f5;
+       background: #eef1f6;
        min-height: 100vh;
        display: flex;
        align-items: center;
        justify-content: center;
-       padding: 1rem;
      }
 
-     /* ── PHISHING CARD ── */
-     .card {
-       background: #fff;
-       border-radius: 12px;
-       box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-       width: 100%;
-       max-width: 440px;
-       overflow: hidden;
-     }
-
-     .card-header {
+     .brand-bar {
        background: linear-gradient(135deg, #1a3c6e 0%, #0d2545 100%);
-       padding: 2rem 2rem 1.6rem;
+       border-radius: 12px 12px 0 0;
+       padding: 1.8rem 2rem 1.5rem;
        text-align: center;
-       position: relative;
      }
 
-     .card-header .logo {
+     .brand-name {
+       color: #fff;
        font-size: 1.6rem;
        font-weight: 700;
-       color: #fff;
        letter-spacing: -0.02em;
      }
 
-     .card-header .logo span { color: #f0a500; }
+     .brand-name span { color: #f0a500; }
 
-     .badge-prize {
-       display: inline-block;
-       background: #f0a500;
-       color: #1a3c6e;
-       font-size: 0.7rem;
-       font-weight: 700;
-       letter-spacing: 0.12em;
-       text-transform: uppercase;
-       padding: 0.25rem 0.75rem;
-       border-radius: 100px;
-       margin-top: 0.6rem;
-     }
-
-     .card-body { padding: 2rem; }
-
-     .prize-box {
+     .prize-banner {
        background: linear-gradient(135deg, #fff8e1, #fff3cd);
-       border: 1.5px solid #f0a500;
+       border: 1.5px solid #f0c040;
        border-radius: 10px;
-       padding: 1.2rem;
        text-align: center;
-       margin-bottom: 1.6rem;
-     }
-
-     .prize-box .trophy { font-size: 2.2rem; }
-
-     .prize-box h2 {
-       font-size: 1.1rem;
-       font-weight: 700;
-       color: #1a3c6e;
-       margin: 0.4rem 0 0.2rem;
-     }
-
-     .prize-box p {
-       font-size: 0.82rem;
-       color: #7a6500;
+       padding: 1.2rem;
      }
 
      .prize-amount {
-       font-size: 2rem;
-       font-weight: 700;
-       color: #f0a500;
-       margin: 0.4rem 0;
+       font-size: 2.2rem;
+       font-weight: 800;
+       color: #b07800;
      }
 
-     label {
-       display: block;
-       font-size: 0.82rem;
-       font-weight: 500;
-       color: #374151;
-       margin-bottom: 0.35rem;
-     }
-
-     input[type="email"],
-     input[type="password"] {
-       width: 100%;
-       padding: 0.72rem 1rem;
-       border: 1.5px solid #d1d5db;
-       border-radius: 8px;
-       font-size: 0.9rem;
-       color: #111;
-       outline: none;
-       transition: border-color 0.2s;
-       margin-bottom: 1rem;
-       font-family: inherit;
-     }
-
-     input:focus { border-color: #1a3c6e; }
-
-     .btn {
-       width: 100%;
-       padding: 0.85rem;
-       background: linear-gradient(135deg, #1a3c6e, #0d2545);
-       color: #fff;
-       font-size: 0.95rem;
-       font-weight: 600;
-       border: none;
-       border-radius: 8px;
-       cursor: pointer;
-       transition: opacity 0.2s, transform 0.1s;
-       font-family: inherit;
-       letter-spacing: 0.01em;
-     }
-
-     .btn:hover  { opacity: 0.92; }
-     .btn:active { transform: scale(0.98); }
-
-     .fine-print {
-       font-size: 0.72rem;
-       color: #9ca3af;
-       text-align: center;
-       margin-top: 1rem;
-       line-height: 1.5;
-     }
-
-     .lock-icon { font-size: 0.8rem; vertical-align: middle; }
-
-     /* ── GOTCHA OVERLAY ── */
+     /* Gotcha overlay */
      #gotcha {
        display: none;
        position: fixed;
        inset: 0;
-       background: rgba(0,0,0,0.85);
-       z-index: 999;
+       background: rgba(0,0,0,0.88);
+       z-index: 9999;
        align-items: center;
        justify-content: center;
        padding: 1rem;
@@ -157,238 +88,260 @@
 
      #gotcha.show { display: flex; }
 
-     .gotcha-card {
+     .gotcha-inner {
        background: #080c0f;
        border: 2px solid #00ff9f;
-       border-radius: 12px;
-       max-width: 500px;
+       border-radius: 14px;
+       max-width: 520px;
        width: 100%;
-       padding: 2.5rem 2rem;
+       padding: 2.5rem 2rem 2rem;
        text-align: center;
-       font-family: 'Share Tech Mono', 'Courier New', monospace;
-       box-shadow: 0 0 60px rgba(0,255,159,0.2);
+       font-family: 'Courier New', monospace;
+       box-shadow: 0 0 60px rgba(0,255,159,0.25);
        animation: pop 0.3s cubic-bezier(0.34,1.56,0.64,1);
      }
 
-     @import
- url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
      @keyframes pop {
-       from { transform: scale(0.7); opacity: 0; }
+       from { transform: scale(0.75); opacity: 0; }
        to   { transform: scale(1);   opacity: 1; }
      }
 
-     .gotcha-card .skull { font-size: 3.5rem; display: block; margin-bottom: 1rem;       
- animation: shake 0.5s ease-in-out; }
+     .gotcha-skull { font-size: 3.5rem; animation: shake 0.5s ease; }
 
      @keyframes shake {
-       0%,100% { transform: rotate(0deg); }
+       0%,100% { transform: rotate(0); }
        25%      { transform: rotate(-8deg); }
        75%      { transform: rotate(8deg); }
      }
 
-     .gotcha-card h1 {
+     .gotcha-title {
        color: #ff004f;
-       font-size: 1.8rem;
+       font-size: 2rem;
        font-weight: 900;
-       text-shadow: 0 0 20px rgba(255,0,79,0.6);
-       margin-bottom: 0.5rem;
+       text-shadow: 0 0 20px rgba(255,0,79,0.5);
      }
 
-     .gotcha-card .sub {
+     .gotcha-sub {
        color: #00ff9f;
-       font-size: 0.85rem;
-       letter-spacing: 0.15em;
+       font-size: 0.8rem;
+       letter-spacing: 0.18em;
        text-transform: uppercase;
-       margin-bottom: 1.8rem;
      }
 
-     .captured-box {
-       background: rgba(255,0,79,0.08);
-       border: 1px solid rgba(255,0,79,0.3);
+     .captured-table {
+       background: rgba(255,0,79,0.06);
+       border: 1px solid rgba(255,0,79,0.25);
        border-radius: 8px;
-       padding: 1rem 1.2rem;
+       padding: 0.8rem 1rem;
        text-align: left;
-       margin-bottom: 1.5rem;
        font-size: 0.82rem;
      }
 
-     .captured-box .row {
-       display: flex;
-       justify-content: space-between;
-       padding: 0.3rem 0;
-       border-bottom: 1px solid rgba(255,255,255,0.05);
-       flex-wrap: wrap;
-       gap: 0.5rem;
-     }
+     .captured-table .lbl { color: #4a6a4a; }
+     .captured-table .val { color: #00ff9f; word-break: break-all; }
+     .captured-table .val.danger { color: #ff004f; }
 
-     .captured-box .row:last-child { border: none; }
-     .captured-box .lbl { color: #4a6a4a; }
-     .captured-box .val { color: #00ff9f; word-break: break-all; }
-     .captured-box .val.red { color: #ff004f; }
-
-     .explain {
-       color: #6b7280;
-       font-size: 0.78rem;
-       line-height: 1.7;
-       margin-bottom: 1.5rem;
-       font-family: 'Inter', sans-serif;
-     }
-
-     .explain strong { color: #e5e7eb; }
-
-     .vuln-chain {
-       display: flex;
-       align-items: center;
-       justify-content: center;
-       flex-wrap: wrap;
-       gap: 0.4rem;
-       font-size: 0.75rem;
-       margin-bottom: 1.5rem;
-     }
-
-     .chip {
+     .chain-badge {
+       display: inline-block;
        background: rgba(0,255,159,0.08);
        border: 1px solid rgba(0,255,159,0.25);
        color: #00ff9f;
-       padding: 0.2rem 0.6rem;
+       font-size: 0.72rem;
+       padding: 0.18rem 0.55rem;
        border-radius: 4px;
      }
 
-     .chip.red {
+     .chain-badge.danger {
        background: rgba(255,0,79,0.08);
        border-color: rgba(255,0,79,0.3);
        color: #ff004f;
      }
 
-     .arrow { color: #4a6a4a; }
+     .explain-text {
+       color: #6b7280;
+       font-size: 0.78rem;
+       line-height: 1.7;
+       font-family: 'Segoe UI', sans-serif;
+     }
 
-     .btn-close {
+     .explain-text strong { color: #e5e7eb; }
+
+     .btn-close-gotcha {
        background: rgba(0,255,159,0.1);
        border: 1.5px solid #00ff9f;
        color: #00ff9f;
-       padding: 0.7rem 2rem;
+       padding: 0.65rem 2rem;
        border-radius: 8px;
        cursor: pointer;
        font-size: 0.85rem;
        letter-spacing: 0.1em;
-       font-family: inherit;
+       font-family: 'Courier New', monospace;
        transition: background 0.2s;
      }
 
-     .btn-close:hover { background: rgba(0,255,159,0.2); }
+     .btn-close-gotcha:hover { background: rgba(0,255,159,0.2); }
 
-     .disclaimer {
-       margin-top: 1rem;
-       font-size: 0.7rem;
-       color: #2a4a2a;
-       font-family: 'Inter', sans-serif;
-     }
+     .disclaimer-small { color: #2a4a2a; font-size: 0.7rem; font-family: 'Segoe UI',     
+ sans-serif; }
    </style>
  </head>
  <body>
 
-   <!-- FAKE PHISHING CARD -->
-   <div class="card">
-     <div class="card-header">
-       <div class="logo">Kvika <span>Bank</span></div>
-       <div class="badge-prize">&#x1F3C6; Employee Rewards Q1 2025</div>
+   <!-- PHISHING CARD -->
+   <div class="card border-0 shadow-lg" style="max-width:420px; width:100%;
+ border-radius:12px; overflow:hidden;">
+
+     <div class="brand-bar">
+       <div class="brand-name">Kvika <span>Bank</span></div>
+       <span class="badge mt-2" style="background:#f0a500; color:#1a3c6e;
+ font-size:0.72rem; letter-spacing:0.1em;">
+         &#x1F3C6; EMPLOYEE REWARDS — Q1 2025
+       </span>
      </div>
-     <div class="card-body">
-       <div class="prize-box">
-         <div class="trophy">&#x1F3C6;</div>
+
+     <div class="card-body p-4">
+
+       <!-- Prize banner -->
+       <div class="prize-banner mb-4">
+         <div style="font-size:2rem;">&#x1F3C6;</div>
          <div class="prize-amount">50.000 ISK</div>
-         <h2>You have been selected!</h2>
-         <p>Verify your identity to claim your employee performance bonus.</p>
+         <div class="fw-semibold text-dark mt-1" style="font-size:0.95rem;">You have     
+ been selected!</div>
+         <div class="text-muted mt-1" style="font-size:0.8rem;">Verify your identity to  
+ claim your Q1 performance bonus.</div>
        </div>
 
-       <form id="phish-form">
-         <label>Work Email</label>
-         <input type="email" id="inp-email" placeholder="you@kvika.is" required
- autocomplete="email"/>
+       <form id="phish-form" novalidate>
 
-         <label>Password</label>
-         <input type="password" id="inp-pass" placeholder="••••••••" required
- autocomplete="current-password"/>
+         <div class="mb-3">
+           <label class="form-label fw-medium" style="font-size:0.85rem;">Work
+ Email</label>
+           <div class="input-group">
+             <span class="input-group-text"><i class="bi bi-envelope-fill
+ text-secondary"></i></span>
+             <input id="inp-email" type="email" class="form-control"
+ placeholder="you@kvika.is" required autocomplete="email"/>
+           </div>
+         </div>
 
-         <button class="btn" type="submit">&#x1F510;&nbsp; Verify &amp; Claim
- Bonus</button>
+         <div class="mb-4">
+           <label class="form-label fw-medium"
+ style="font-size:0.85rem;">Password</label>
+           <div class="input-group">
+             <span class="input-group-text"><i class="bi bi-lock-fill
+ text-secondary"></i></span>
+             <input id="inp-pass" type="password" class="form-control"
+ placeholder="••••••••" required autocomplete="current-password"/>
+             <button class="btn btn-outline-secondary" type="button" id="toggle-pass"    
+ tabindex="-1">
+               <i class="bi bi-eye" id="eye-icon"></i>
+             </button>
+           </div>
+         </div>
+
+         <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold"
+           style="background:linear-gradient(135deg,#1a3c6e,#0d2545); border:none;       
+ font-size:0.95rem;">
+           <i class="bi bi-shield-check me-1"></i> Verify &amp; Claim Bonus
+         </button>
+
        </form>
 
-       <p class="fine-print">
-         <span class="lock-icon">&#x1F512;</span> Secured by Kvika IT &bull; Internal    
- portal &bull; Do not share this link
-       </p>
+       <div class="text-center mt-3" style="font-size:0.72rem; color:#9ca3af;">
+         <i class="bi bi-lock-fill"></i> Secured by Kvika IT &bull; Internal portal      
+ &bull; Do not share this link
+       </div>
+
      </div>
    </div>
 
    <!-- GOTCHA OVERLAY -->
    <div id="gotcha">
-     <div class="gotcha-card">
-       <span class="skull">&#x1F480;</span>
-       <h1>GOT YOU.</h1>
-       <p class="sub">Subdomain Takeover — Proof of Concept</p>
+     <div class="gotcha-inner">
+       <div class="gotcha-skull mb-2">&#x1F480;</div>
+       <div class="gotcha-title mb-1">GOT YOU.</div>
+       <div class="gotcha-sub mb-4">Subdomain Takeover — Proof of Concept</div>
 
-       <div class="captured-box">
-         <div class="row">
+       <div class="captured-table mb-3">
+         <div class="d-flex justify-content-between py-1 border-bottom border-dark">     
            <span class="lbl">email</span>
            <span class="val" id="out-email"></span>
          </div>
-         <div class="row">
+         <div class="d-flex justify-content-between py-1 border-bottom border-dark">     
            <span class="lbl">password</span>
-           <span class="val red" id="out-pass"></span>
+           <span class="val danger" id="out-pass"></span>
          </div>
-         <div class="row">
+         <div class="d-flex justify-content-between py-1 border-bottom border-dark">     
            <span class="lbl">domain</span>
            <span class="val">wat.kv.ambaga.wtf</span>
          </div>
-         <div class="row">
+         <div class="d-flex justify-content-between py-1">
            <span class="lbl">sent to attacker</span>
-           <span class="val red">NO — this is a demo ✓</span>
+           <span class="val">NO — demo only ✓</span>
          </div>
        </div>
 
-       <div class="vuln-chain">
-         <span class="chip">wat.kv.ambaga.wtf</span>
-         <span class="arrow">→</span>
-         <span class="chip">CNAME</span>
-         <span class="arrow">→</span>
-         <span class="chip red">ambagasec.github.io (404)</span>
-         <span class="arrow">→</span>
-         <span class="chip">GitHub Pages claimed</span>
-         <span class="arrow">→</span>
-         <span class="chip red">full control</span>
+       <!-- Attack chain -->
+       <div class="d-flex flex-wrap align-items-center justify-content-center gap-1      
+ mb-3" style="font-size:0.72rem;">
+         <span class="chain-badge">wat.kv.ambaga.wtf</span>
+         <span style="color:#4a6a4a;">→</span>
+         <span class="chain-badge">CNAME</span>
+         <span style="color:#4a6a4a;">→</span>
+         <span class="chain-badge danger">ambagasec.github.io (404)</span>
+         <span style="color:#4a6a4a;">→</span>
+         <span class="chain-badge">Pages claimed</span>
+         <span style="color:#4a6a4a;">→</span>
+         <span class="chain-badge danger">full control</span>
        </div>
 
-       <p class="explain">
-         A <strong>dangling CNAME</strong> pointed <code>wat.kv.ambaga.wtf</code> at an  
-         unclaimed GitHub Pages endpoint. By registering that endpoint we gained
-         <strong>full control of a trusted subdomain</strong> — allowing us to serve     
-         any content, steal session cookies scoped to <code>*.ambaga.wtf</code>,
-         and harvest credentials exactly like this.
+       <p class="explain-text mb-4">
+         A <strong>dangling CNAME</strong> pointed <code
+ style="color:#f0a500;">wat.kv.ambaga.wtf</code> at an
+         unclaimed GitHub Pages endpoint. By registering that endpoint an attacker gains 
+         <strong>full control of a trusted subdomain</strong> — enabling credential      
+ phishing,
+         session cookie theft scoped to <code
+ style="color:#f0a500;">*.ambaga.wtf</code>, and CSP bypass.
        </p>
 
-       <button class="btn-close"
+       <button class="btn-close-gotcha mb-2"
  onclick="document.getElementById('gotcha').classList.remove('show')">
          UNDERSTOOD
        </button>
-       <p class="disclaimer">No credentials were transmitted or stored. Authorized       
- security course exercise.</p>
+       <p class="disclaimer-small mt-2">No credentials were transmitted or stored.       
+ Authorized security course exercise.</p>
      </div>
    </div>
 
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.mi 
+ n.js"></script>
    <script>
-     document.getElementById('phish-form').addEventListener('submit', function(e) {      
+     // Toggle password visibility
+     document.getElementById('toggle-pass').addEventListener('click', function () {      
+       var inp  = document.getElementById('inp-pass');
+       var icon = document.getElementById('eye-icon');
+       if (inp.type === 'password') {
+         inp.type = 'text';
+         icon.className = 'bi bi-eye-slash';
+       } else {
+         inp.type = 'password';
+         icon.className = 'bi bi-eye';
+       }
+     });
+
+     // Show gotcha on submit
+     document.getElementById('phish-form').addEventListener('submit', function (e) {     
        e.preventDefault();
        var email = document.getElementById('inp-email').value;
        var pass  = document.getElementById('inp-pass').value;
-       // Mask password for display only
        document.getElementById('out-email').textContent = email;
        document.getElementById('out-pass').textContent  = '*'.repeat(pass.length) + '    
  (' + pass.length + ' chars)';
        document.getElementById('gotcha').classList.add('show');
      });
    </script>
-
  </body>
+ </html>
+
  </html>
