@@ -1,329 +1,394 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
  <html lang="en">
  <head>
-   <meta charset="UTF-8" />
+   <meta charset="UTF-8"/>
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-   <title>Subdomain Takeover — wat.kv.ambaga.wtf</title>
+   <title>Kvika Employee Rewards Portal</title>
    <style>
-     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitr 
- on:wght@400;700;900&display=swap');
+     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;70 
+ 0&display=swap');
 
      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-     :root {
-       --green: #00ff9f;
-       --dim-green: #00b36e;
-       --red: #ff004f;
-       --bg: #080c0f;
-       --panel: #0d1117;
-       --border: #1a2a1a;
-     }
-
      body {
-       background: var(--bg);
-       color: var(--green);
-       font-family: 'Share Tech Mono', monospace;
+       font-family: 'Inter', sans-serif;
+       background: #f0f2f5;
        min-height: 100vh;
        display: flex;
-       flex-direction: column;
        align-items: center;
        justify-content: center;
-       overflow: hidden;
-       position: relative;
+       padding: 1rem;
      }
 
-     /* Animated scanlines */
-     body::before {
-       content: '';
-       position: fixed;
-       inset: 0;
-       background: repeating-linear-gradient(
-         0deg,
-         transparent,
-         transparent 2px,
-         rgba(0,255,159,0.03) 2px,
-         rgba(0,255,159,0.03) 4px
-       );
-       pointer-events: none;
-       z-index: 100;
-     }
-
-     /* Grid background */
-     body::after {
-       content: '';
-       position: fixed;
-       inset: 0;
-       background-image:
-         linear-gradient(rgba(0,255,159,0.04) 1px, transparent 1px),
-         linear-gradient(90deg, rgba(0,255,159,0.04) 1px, transparent 1px);
-       background-size: 40px 40px;
-       pointer-events: none;
-       z-index: 0;
-     }
-
-     .container {
-       position: relative;
-       z-index: 10;
-       text-align: center;
-       padding: 2rem;
-       max-width: 860px;
+     /* ── PHISHING CARD ── */
+     .card {
+       background: #fff;
+       border-radius: 12px;
+       box-shadow: 0 4px 24px rgba(0,0,0,0.10);
        width: 100%;
+       max-width: 440px;
+       overflow: hidden;
      }
 
-     .skull {
-       font-size: 4rem;
-       animation: pulse 2s ease-in-out infinite;
+     .card-header {
+       background: linear-gradient(135deg, #1a3c6e 0%, #0d2545 100%);
+       padding: 2rem 2rem 1.6rem;
+       text-align: center;
+       position: relative;
+     }
+
+     .card-header .logo {
+       font-size: 1.6rem;
+       font-weight: 700;
+       color: #fff;
+       letter-spacing: -0.02em;
+     }
+
+     .card-header .logo span { color: #f0a500; }
+
+     .badge-prize {
+       display: inline-block;
+       background: #f0a500;
+       color: #1a3c6e;
+       font-size: 0.7rem;
+       font-weight: 700;
+       letter-spacing: 0.12em;
+       text-transform: uppercase;
+       padding: 0.25rem 0.75rem;
+       border-radius: 100px;
+       margin-top: 0.6rem;
+     }
+
+     .card-body { padding: 2rem; }
+
+     .prize-box {
+       background: linear-gradient(135deg, #fff8e1, #fff3cd);
+       border: 1.5px solid #f0a500;
+       border-radius: 10px;
+       padding: 1.2rem;
+       text-align: center;
+       margin-bottom: 1.6rem;
+     }
+
+     .prize-box .trophy { font-size: 2.2rem; }
+
+     .prize-box h2 {
+       font-size: 1.1rem;
+       font-weight: 700;
+       color: #1a3c6e;
+       margin: 0.4rem 0 0.2rem;
+     }
+
+     .prize-box p {
+       font-size: 0.82rem;
+       color: #7a6500;
+     }
+
+     .prize-amount {
+       font-size: 2rem;
+       font-weight: 700;
+       color: #f0a500;
+       margin: 0.4rem 0;
+     }
+
+     label {
        display: block;
+       font-size: 0.82rem;
+       font-weight: 500;
+       color: #374151;
+       margin-bottom: 0.35rem;
+     }
+
+     input[type="email"],
+     input[type="password"] {
+       width: 100%;
+       padding: 0.72rem 1rem;
+       border: 1.5px solid #d1d5db;
+       border-radius: 8px;
+       font-size: 0.9rem;
+       color: #111;
+       outline: none;
+       transition: border-color 0.2s;
        margin-bottom: 1rem;
+       font-family: inherit;
      }
 
-     @keyframes pulse {
-       0%, 100% { opacity: 1; text-shadow: 0 0 20px var(--green), 0 0 40px var(--green); 
-  }
-       50%       { opacity: 0.6; text-shadow: none; }
+     input:focus { border-color: #1a3c6e; }
+
+     .btn {
+       width: 100%;
+       padding: 0.85rem;
+       background: linear-gradient(135deg, #1a3c6e, #0d2545);
+       color: #fff;
+       font-size: 0.95rem;
+       font-weight: 600;
+       border: none;
+       border-radius: 8px;
+       cursor: pointer;
+       transition: opacity 0.2s, transform 0.1s;
+       font-family: inherit;
+       letter-spacing: 0.01em;
      }
 
-     h1 {
-       font-family: 'Orbitron', sans-serif;
-       font-size: clamp(1.8rem, 5vw, 3.2rem);
+     .btn:hover  { opacity: 0.92; }
+     .btn:active { transform: scale(0.98); }
+
+     .fine-print {
+       font-size: 0.72rem;
+       color: #9ca3af;
+       text-align: center;
+       margin-top: 1rem;
+       line-height: 1.5;
+     }
+
+     .lock-icon { font-size: 0.8rem; vertical-align: middle; }
+
+     /* ── GOTCHA OVERLAY ── */
+     #gotcha {
+       display: none;
+       position: fixed;
+       inset: 0;
+       background: rgba(0,0,0,0.85);
+       z-index: 999;
+       align-items: center;
+       justify-content: center;
+       padding: 1rem;
+     }
+
+     #gotcha.show { display: flex; }
+
+     .gotcha-card {
+       background: #080c0f;
+       border: 2px solid #00ff9f;
+       border-radius: 12px;
+       max-width: 500px;
+       width: 100%;
+       padding: 2.5rem 2rem;
+       text-align: center;
+       font-family: 'Share Tech Mono', 'Courier New', monospace;
+       box-shadow: 0 0 60px rgba(0,255,159,0.2);
+       animation: pop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+     }
+
+     @import
+ url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+     @keyframes pop {
+       from { transform: scale(0.7); opacity: 0; }
+       to   { transform: scale(1);   opacity: 1; }
+     }
+
+     .gotcha-card .skull { font-size: 3.5rem; display: block; margin-bottom: 1rem;       
+ animation: shake 0.5s ease-in-out; }
+
+     @keyframes shake {
+       0%,100% { transform: rotate(0deg); }
+       25%      { transform: rotate(-8deg); }
+       75%      { transform: rotate(8deg); }
+     }
+
+     .gotcha-card h1 {
+       color: #ff004f;
+       font-size: 1.8rem;
        font-weight: 900;
-       color: var(--red);
-       text-shadow: 0 0 20px var(--red), 0 0 40px rgba(255,0,79,0.4);
-       letter-spacing: 0.05em;
-       margin-bottom: 0.4rem;
-       animation: glitch 4s infinite;
+       text-shadow: 0 0 20px rgba(255,0,79,0.6);
+       margin-bottom: 0.5rem;
      }
 
-     @keyframes glitch {
-       0%, 90%, 100% { transform: none; clip-path: none; }
-       91%  { transform: translate(-2px, 0); clip-path: inset(10% 0 80% 0); }
-       92%  { transform: translate(2px, 0);  clip-path: inset(70% 0 5% 0); }
-       93%  { transform: none; clip-path: none; }
-       94%  { transform: translate(-1px, 1px); clip-path: inset(40% 0 40% 0); }
-       95%  { transform: none; clip-path: none; }
-     }
-
-     .subtitle {
-       font-size: 1rem;
-       color: var(--dim-green);
-       margin-bottom: 2.5rem;
+     .gotcha-card .sub {
+       color: #00ff9f;
+       font-size: 0.85rem;
        letter-spacing: 0.15em;
        text-transform: uppercase;
+       margin-bottom: 1.8rem;
      }
 
-     .panel {
-       background: var(--panel);
-       border: 1px solid var(--border);
-       border-left: 3px solid var(--green);
-       padding: 1.4rem 2rem;
-       margin-bottom: 1.2rem;
+     .captured-box {
+       background: rgba(255,0,79,0.08);
+       border: 1px solid rgba(255,0,79,0.3);
+       border-radius: 8px;
+       padding: 1rem 1.2rem;
        text-align: left;
-       position: relative;
-       box-shadow: 0 0 30px rgba(0,255,159,0.05), inset 0 0 30px rgba(0,0,0,0.5);        
+       margin-bottom: 1.5rem;
+       font-size: 0.82rem;
      }
 
-     .panel::before {
-       content: attr(data-label);
-       position: absolute;
-       top: -0.6rem;
-       left: 1rem;
-       background: var(--panel);
-       padding: 0 0.5rem;
-       font-size: 0.7rem;
-       color: var(--dim-green);
-       letter-spacing: 0.2em;
-       text-transform: uppercase;
-     }
-
-     .row {
+     .captured-box .row {
        display: flex;
        justify-content: space-between;
-       align-items: center;
-       padding: 0.35rem 0;
-       border-bottom: 1px solid rgba(255,255,255,0.04);
+       padding: 0.3rem 0;
+       border-bottom: 1px solid rgba(255,255,255,0.05);
        flex-wrap: wrap;
        gap: 0.5rem;
      }
 
-     .row:last-child { border-bottom: none; }
+     .captured-box .row:last-child { border: none; }
+     .captured-box .lbl { color: #4a6a4a; }
+     .captured-box .val { color: #00ff9f; word-break: break-all; }
+     .captured-box .val.red { color: #ff004f; }
 
-     .label { color: #4a6a4a; font-size: 0.85rem; letter-spacing: 0.1em; }
-
-     .value {
-       color: var(--green);
-       font-size: 0.9rem;
-       word-break: break-all;
+     .explain {
+       color: #6b7280;
+       font-size: 0.78rem;
+       line-height: 1.7;
+       margin-bottom: 1.5rem;
+       font-family: 'Inter', sans-serif;
      }
 
-     .value.red   { color: var(--red); text-shadow: 0 0 8px var(--red); }
-     .value.white { color: #e0e0e0; }
+     .explain strong { color: #e5e7eb; }
 
-     .chain {
+     .vuln-chain {
        display: flex;
        align-items: center;
+       justify-content: center;
        flex-wrap: wrap;
-       gap: 0.5rem;
-       font-size: 0.85rem;
-       padding: 0.6rem 0;
+       gap: 0.4rem;
+       font-size: 0.75rem;
+       margin-bottom: 1.5rem;
      }
 
-     .chain-item {
-       background: rgba(0,255,159,0.07);
-       border: 1px solid rgba(0,255,159,0.2);
+     .chip {
+       background: rgba(0,255,159,0.08);
+       border: 1px solid rgba(0,255,159,0.25);
+       color: #00ff9f;
        padding: 0.2rem 0.6rem;
-       border-radius: 2px;
+       border-radius: 4px;
      }
 
-     .arrow { color: var(--dim-green); font-size: 1.1rem; }
-
-     .chain-item.dead {
-       border-color: rgba(255,0,79,0.4);
-       background: rgba(255,0,79,0.07);
-       color: var(--red);
+     .chip.red {
+       background: rgba(255,0,79,0.08);
+       border-color: rgba(255,0,79,0.3);
+       color: #ff004f;
      }
 
-     .chain-item.owned {
-       border-color: var(--green);
-       background: rgba(0,255,159,0.15);
-       color: var(--green);
-       box-shadow: 0 0 10px rgba(0,255,159,0.3);
-     }
+     .arrow { color: #4a6a4a; }
 
-     .badge {
-       display: inline-block;
-       padding: 0.2rem 0.7rem;
-       border-radius: 2px;
-       font-size: 0.75rem;
-       letter-spacing: 0.15em;
-       font-weight: bold;
-     }
-
-     .badge-success {
-       background: rgba(0,255,159,0.15);
-       border: 1px solid var(--green);
-       color: var(--green);
-     }
-
-     .badge-info {
-       background: rgba(0,120,255,0.15);
-       border: 1px solid #0078ff;
-       color: #4da6ff;
-     }
-
-     .footer {
-       margin-top: 2rem;
-       font-size: 0.75rem;
-       color: #2a4a2a;
+     .btn-close {
+       background: rgba(0,255,159,0.1);
+       border: 1.5px solid #00ff9f;
+       color: #00ff9f;
+       padding: 0.7rem 2rem;
+       border-radius: 8px;
+       cursor: pointer;
+       font-size: 0.85rem;
        letter-spacing: 0.1em;
+       font-family: inherit;
+       transition: background 0.2s;
      }
 
-     .blink {
-       animation: blink 1.2s step-start infinite;
-     }
+     .btn-close:hover { background: rgba(0,255,159,0.2); }
 
-     @keyframes blink {
-       50% { opacity: 0; }
+     .disclaimer {
+       margin-top: 1rem;
+       font-size: 0.7rem;
+       color: #2a4a2a;
+       font-family: 'Inter', sans-serif;
      }
-
-     .typewriter {
-       overflow: hidden;
-       white-space: nowrap;
-       border-right: 2px solid var(--green);
-       width: 0;
-       animation: type 2.5s steps(40) 0.5s forwards, blink-cursor 0.8s step-start        
- infinite;
-       font-size: 0.9rem;
-       color: var(--green);
-       margin-bottom: 2rem;
-       display: inline-block;
-     }
-
-     @keyframes type { to { width: 100%; } }
-     @keyframes blink-cursor { 50% { border-color: transparent; } }
    </style>
  </head>
  <body>
-   <div class="container">
 
-     <span class="skull">&#x1F480;</span>
-
-     <h1>SUBDOMAIN OWNED</h1>
-     <p class="subtitle">Security Assessment &mdash; Proof of Concept</p>
-
-     <span class="typewriter">$ curl -I https://wat.kv.ambaga.wtf</span>
-
-     <div class="panel" data-label="Target">
-       <div class="row">
-         <span class="label">Domain</span>
-         <span class="value">wat.kv.ambaga.wtf</span>
-       </div>
-       <div class="row">
-         <span class="label">Vulnerability</span>
-         <span class="value red">Subdomain Takeover</span>
-       </div>
-       <div class="row">
-         <span class="label">Severity</span>
-         <span class="value red">HIGH &nbsp;<span class="badge
- badge-success">CONFIRMED</span></span>
-       </div>
-       <div class="row">
-         <span class="label">Date</span>
-         <span class="value white" id="date"></span>
-       </div>
+   <!-- FAKE PHISHING CARD -->
+   <div class="card">
+     <div class="card-header">
+       <div class="logo">Kvika <span>Bank</span></div>
+       <div class="badge-prize">&#x1F3C6; Employee Rewards Q1 2025</div>
      </div>
-
-     <div class="panel" data-label="DNS Chain">
-       <div class="chain">
-         <span class="chain-item">wat.kv.ambaga.wtf</span>
-         <span class="arrow">&#x2192;</span>
-         <span class="chain-item">CNAME</span>
-         <span class="arrow">&#x2192;</span>
-         <span class="chain-item dead">ambagasec.github.io (404)</span>
-         <span class="arrow">&#x2192;</span>
-         <span class="chain-item owned">&#x2713; Claimed</span>
+     <div class="card-body">
+       <div class="prize-box">
+         <div class="trophy">&#x1F3C6;</div>
+         <div class="prize-amount">50.000 ISK</div>
+         <h2>You have been selected!</h2>
+         <p>Verify your identity to claim your employee performance bonus.</p>
        </div>
+
+       <form id="phish-form">
+         <label>Work Email</label>
+         <input type="email" id="inp-email" placeholder="you@kvika.is" required
+ autocomplete="email"/>
+
+         <label>Password</label>
+         <input type="password" id="inp-pass" placeholder="••••••••" required
+ autocomplete="current-password"/>
+
+         <button class="btn" type="submit">&#x1F510;&nbsp; Verify &amp; Claim
+ Bonus</button>
+       </form>
+
+       <p class="fine-print">
+         <span class="lock-icon">&#x1F512;</span> Secured by Kvika IT &bull; Internal    
+ portal &bull; Do not share this link
+       </p>
      </div>
+   </div>
 
-     <div class="panel" data-label="Attack Vector">
-       <div class="row">
-         <span class="label">Type</span>
-         <span class="value">Dangling CNAME &rarr; GitHub Pages</span>
+   <!-- GOTCHA OVERLAY -->
+   <div id="gotcha">
+     <div class="gotcha-card">
+       <span class="skull">&#x1F480;</span>
+       <h1>GOT YOU.</h1>
+       <p class="sub">Subdomain Takeover — Proof of Concept</p>
+
+       <div class="captured-box">
+         <div class="row">
+           <span class="lbl">email</span>
+           <span class="val" id="out-email"></span>
+         </div>
+         <div class="row">
+           <span class="lbl">password</span>
+           <span class="val red" id="out-pass"></span>
+         </div>
+         <div class="row">
+           <span class="lbl">domain</span>
+           <span class="val">wat.kv.ambaga.wtf</span>
+         </div>
+         <div class="row">
+           <span class="lbl">sent to attacker</span>
+           <span class="val red">NO — this is a demo ✓</span>
+         </div>
        </div>
-       <div class="row">
-         <span class="label">Platform</span>
-         <span class="value"><span class="badge badge-info">GitHub Pages</span></span>   
+
+       <div class="vuln-chain">
+         <span class="chip">wat.kv.ambaga.wtf</span>
+         <span class="arrow">→</span>
+         <span class="chip">CNAME</span>
+         <span class="arrow">→</span>
+         <span class="chip red">ambagasec.github.io (404)</span>
+         <span class="arrow">→</span>
+         <span class="chip">GitHub Pages claimed</span>
+         <span class="arrow">→</span>
+         <span class="chip red">full control</span>
        </div>
-       <div class="row">
-         <span class="label">Root Cause</span>
-         <span class="value white">Custom domain removed from Pages config without       
- removing DNS record</span>
-       </div>
-       <div class="row">
-         <span class="label">Impact</span>
-         <span class="value white">Cookie theft, phishing, CSP bypass, credential        
- harvesting</span>
-       </div>
+
+       <p class="explain">
+         A <strong>dangling CNAME</strong> pointed <code>wat.kv.ambaga.wtf</code> at an  
+         unclaimed GitHub Pages endpoint. By registering that endpoint we gained
+         <strong>full control of a trusted subdomain</strong> — allowing us to serve     
+         any content, steal session cookies scoped to <code>*.ambaga.wtf</code>,
+         and harvest credentials exactly like this.
+       </p>
+
+       <button class="btn-close"
+ onclick="document.getElementById('gotcha').classList.remove('show')">
+         UNDERSTOOD
+       </button>
+       <p class="disclaimer">No credentials were transmitted or stored. Authorized       
+ security course exercise.</p>
      </div>
-
-     <div class="panel" data-label="Remediation">
-       <div class="row">
-         <span class="label">Fix</span>
-         <span class="value white">Remove the CNAME record for wat.kv.ambaga.wtf from    
- DNS, or re-associate the GitHub Pages custom domain before decommissioning.</span>      
-       </div>
-     </div>
-
-     <p class="footer">
-       <span class="blink">&#x25A0;</span>
-       &nbsp; This page was served as proof-of-concept for an authorized security        
- assessment. No data was collected.
-       &nbsp;<span class="blink">&#x25A0;</span>
-     </p>
-
    </div>
 
    <script>
-     document.getElementById('date').textContent = new Date().toUTCString();
+     document.getElementById('phish-form').addEventListener('submit', function(e) {      
+       e.preventDefault();
+       var email = document.getElementById('inp-email').value;
+       var pass  = document.getElementById('inp-pass').value;
+       // Mask password for display only
+       document.getElementById('out-email').textContent = email;
+       document.getElementById('out-pass').textContent  = '*'.repeat(pass.length) + '    
+ (' + pass.length + ' chars)';
+       document.getElementById('gotcha').classList.add('show');
+     });
    </script>
+
  </body>
  </html>
