@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   <title>Subdomain Takeover — wat.kv.ambaga.wtf</title>
+   <style>
+     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitr 
+ on:wght@400;700;900&display=swap');
+
+     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+     :root {
+       --green: #00ff9f;
+       --dim-green: #00b36e;
+       --red: #ff004f;
+       --bg: #080c0f;
+       --panel: #0d1117;
+       --border: #1a2a1a;
+     }
+
+     body {
+       background: var(--bg);
+       color: var(--green);
+       font-family: 'Share Tech Mono', monospace;
+       min-height: 100vh;
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+       overflow: hidden;
+       position: relative;
+     }
+
+     /* Animated scanlines */
+     body::before {
+       content: '';
+       position: fixed;
+       inset: 0;
+       background: repeating-linear-gradient(
+         0deg,
+         transparent,
+         transparent 2px,
+         rgba(0,255,159,0.03) 2px,
+         rgba(0,255,159,0.03) 4px
+       );
+       pointer-events: none;
+       z-index: 100;
+     }
+
+     /* Grid background */
+     body::after {
+       content: '';
+       position: fixed;
+       inset: 0;
+       background-image:
+         linear-gradient(rgba(0,255,159,0.04) 1px, transparent 1px),
+         linear-gradient(90deg, rgba(0,255,159,0.04) 1px, transparent 1px);
+       background-size: 40px 40px;
+       pointer-events: none;
+       z-index: 0;
+     }
+
+     .container {
+       position: relative;
+       z-index: 10;
+       text-align: center;
+       padding: 2rem;
+       max-width: 860px;
+       width: 100%;
+     }
+
+     .skull {
+       font-size: 4rem;
+       animation: pulse 2s ease-in-out infinite;
+       display: block;
+       margin-bottom: 1rem;
+     }
+
+     @keyframes pulse {
+       0%, 100% { opacity: 1; text-shadow: 0 0 20px var(--green), 0 0 40px var(--green); 
+  }
+       50%       { opacity: 0.6; text-shadow: none; }
+     }
+
+     h1 {
+       font-family: 'Orbitron', sans-serif;
+       font-size: clamp(1.8rem, 5vw, 3.2rem);
+       font-weight: 900;
+       color: var(--red);
+       text-shadow: 0 0 20px var(--red), 0 0 40px rgba(255,0,79,0.4);
+       letter-spacing: 0.05em;
+       margin-bottom: 0.4rem;
+       animation: glitch 4s infinite;
+     }
+
+     @keyframes glitch {
+       0%, 90%, 100% { transform: none; clip-path: none; }
+       91%  { transform: translate(-2px, 0); clip-path: inset(10% 0 80% 0); }
+       92%  { transform: translate(2px, 0);  clip-path: inset(70% 0 5% 0); }
+       93%  { transform: none; clip-path: none; }
+       94%  { transform: translate(-1px, 1px); clip-path: inset(40% 0 40% 0); }
+       95%  { transform: none; clip-path: none; }
+     }
+
+     .subtitle {
+       font-size: 1rem;
+       color: var(--dim-green);
+       margin-bottom: 2.5rem;
+       letter-spacing: 0.15em;
+       text-transform: uppercase;
+     }
+
+     .panel {
+       background: var(--panel);
+       border: 1px solid var(--border);
+       border-left: 3px solid var(--green);
+       padding: 1.4rem 2rem;
+       margin-bottom: 1.2rem;
+       text-align: left;
+       position: relative;
+       box-shadow: 0 0 30px rgba(0,255,159,0.05), inset 0 0 30px rgba(0,0,0,0.5);        
+     }
+
+     .panel::before {
+       content: attr(data-label);
+       position: absolute;
+       top: -0.6rem;
+       left: 1rem;
+       background: var(--panel);
+       padding: 0 0.5rem;
+       font-size: 0.7rem;
+       color: var(--dim-green);
+       letter-spacing: 0.2em;
+       text-transform: uppercase;
+     }
+
+     .row {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       padding: 0.35rem 0;
+       border-bottom: 1px solid rgba(255,255,255,0.04);
+       flex-wrap: wrap;
+       gap: 0.5rem;
+     }
+
+     .row:last-child { border-bottom: none; }
+
+     .label { color: #4a6a4a; font-size: 0.85rem; letter-spacing: 0.1em; }
+
+     .value {
+       color: var(--green);
+       font-size: 0.9rem;
+       word-break: break-all;
+     }
+
+     .value.red   { color: var(--red); text-shadow: 0 0 8px var(--red); }
+     .value.white { color: #e0e0e0; }
+
+     .chain {
+       display: flex;
+       align-items: center;
+       flex-wrap: wrap;
+       gap: 0.5rem;
+       font-size: 0.85rem;
+       padding: 0.6rem 0;
+     }
+
+     .chain-item {
+       background: rgba(0,255,159,0.07);
+       border: 1px solid rgba(0,255,159,0.2);
+       padding: 0.2rem 0.6rem;
+       border-radius: 2px;
+     }
+
+     .arrow { color: var(--dim-green); font-size: 1.1rem; }
+
+     .chain-item.dead {
+       border-color: rgba(255,0,79,0.4);
+       background: rgba(255,0,79,0.07);
+       color: var(--red);
+     }
+
+     .chain-item.owned {
+       border-color: var(--green);
+       background: rgba(0,255,159,0.15);
+       color: var(--green);
+       box-shadow: 0 0 10px rgba(0,255,159,0.3);
+     }
+
+     .badge {
+       display: inline-block;
+       padding: 0.2rem 0.7rem;
+       border-radius: 2px;
+       font-size: 0.75rem;
+       letter-spacing: 0.15em;
+       font-weight: bold;
+     }
+
+     .badge-success {
+       background: rgba(0,255,159,0.15);
+       border: 1px solid var(--green);
+       color: var(--green);
+     }
+
+     .badge-info {
+       background: rgba(0,120,255,0.15);
+       border: 1px solid #0078ff;
+       color: #4da6ff;
+     }
+
+     .footer {
+       margin-top: 2rem;
+       font-size: 0.75rem;
+       color: #2a4a2a;
+       letter-spacing: 0.1em;
+     }
+
+     .blink {
+       animation: blink 1.2s step-start infinite;
+     }
+
+     @keyframes blink {
+       50% { opacity: 0; }
+     }
+
+     .typewriter {
+       overflow: hidden;
+       white-space: nowrap;
+       border-right: 2px solid var(--green);
+       width: 0;
+       animation: type 2.5s steps(40) 0.5s forwards, blink-cursor 0.8s step-start        
+ infinite;
+       font-size: 0.9rem;
+       color: var(--green);
+       margin-bottom: 2rem;
+       display: inline-block;
+     }
+
+     @keyframes type { to { width: 100%; } }
+     @keyframes blink-cursor { 50% { border-color: transparent; } }
+   </style>
+ </head>
+ <body>
+   <div class="container">
+
+     <span class="skull">&#x1F480;</span>
+
+     <h1>SUBDOMAIN OWNED</h1>
+     <p class="subtitle">Security Assessment &mdash; Proof of Concept</p>
+
+     <span class="typewriter">$ curl -I https://wat.kv.ambaga.wtf</span>
+
+     <div class="panel" data-label="Target">
+       <div class="row">
+         <span class="label">Domain</span>
+         <span class="value">wat.kv.ambaga.wtf</span>
+       </div>
+       <div class="row">
+         <span class="label">Vulnerability</span>
+         <span class="value red">Subdomain Takeover</span>
+       </div>
+       <div class="row">
+         <span class="label">Severity</span>
+         <span class="value red">HIGH &nbsp;<span class="badge
+ badge-success">CONFIRMED</span></span>
+       </div>
+       <div class="row">
+         <span class="label">Date</span>
+         <span class="value white" id="date"></span>
+       </div>
+     </div>
+
+     <div class="panel" data-label="DNS Chain">
+       <div class="chain">
+         <span class="chain-item">wat.kv.ambaga.wtf</span>
+         <span class="arrow">&#x2192;</span>
+         <span class="chain-item">CNAME</span>
+         <span class="arrow">&#x2192;</span>
+         <span class="chain-item dead">ambagasec.github.io (404)</span>
+         <span class="arrow">&#x2192;</span>
+         <span class="chain-item owned">&#x2713; Claimed</span>
+       </div>
+     </div>
+
+     <div class="panel" data-label="Attack Vector">
+       <div class="row">
+         <span class="label">Type</span>
+         <span class="value">Dangling CNAME &rarr; GitHub Pages</span>
+       </div>
+       <div class="row">
+         <span class="label">Platform</span>
+         <span class="value"><span class="badge badge-info">GitHub Pages</span></span>   
+       </div>
+       <div class="row">
+         <span class="label">Root Cause</span>
+         <span class="value white">Custom domain removed from Pages config without       
+ removing DNS record</span>
+       </div>
+       <div class="row">
+         <span class="label">Impact</span>
+         <span class="value white">Cookie theft, phishing, CSP bypass, credential        
+ harvesting</span>
+       </div>
+     </div>
+
+     <div class="panel" data-label="Remediation">
+       <div class="row">
+         <span class="label">Fix</span>
+         <span class="value white">Remove the CNAME record for wat.kv.ambaga.wtf from    
+ DNS, or re-associate the GitHub Pages custom domain before decommissioning.</span>      
+       </div>
+     </div>
+
+     <p class="footer">
+       <span class="blink">&#x25A0;</span>
+       &nbsp; This page was served as proof-of-concept for an authorized security        
+ assessment. No data was collected.
+       &nbsp;<span class="blink">&#x25A0;</span>
+     </p>
+
+   </div>
+
+   <script>
+     document.getElementById('date').textContent = new Date().toUTCString();
+   </script>
+ </body>
+ </html>
